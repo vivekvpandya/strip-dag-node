@@ -284,6 +284,20 @@ mod test {
         println!("Before deleting 'd' {}", g_ref.to_string());
         assert!(g_ref.delete_node('d'));
         println!("After deleting 'd' {}", g_ref.to_string());
+
+		let g = Graph::from_str("a-b,c-d");
+        assert!(g.is_ok());
+        let g_ref = &mut g.unwrap();
+        println!("Before deleting 'a' {}", g_ref.to_string());
+        assert!(g_ref.delete_node('a'));
+        println!("After deleting 'a' {}", g_ref.to_string());
+
+		let g = Graph::from_str("a-b,c-d");
+        assert!(g.is_ok());
+        let g_ref = &mut g.unwrap();
+        println!("Before deleting 'd' {}", g_ref.to_string());
+        assert!(g_ref.delete_node('d'));
+        println!("After deleting 'd' {}", g_ref.to_string());
     }
 
     #[test]
