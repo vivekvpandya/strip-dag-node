@@ -14,6 +14,8 @@ impl fmt::Display for ParsingError {
     }
 }
 
+// NOTE: In below hashmap key represents vertex and value is all nodes which has edge from vertex to that node.
+//		 A hashmap entry with empty value is treated as unconnected vertex in graph
 #[derive(Debug, PartialEq, Eq)]
 pub struct Graph {
     data: HashMap<char, HashSet<char>>,
@@ -72,33 +74,12 @@ impl Graph {
                         self.data.insert(*v, set);
                     }
                 }
-
-                // clean up: if any node seems unconnected in above loop
-                //           how ever
-                /*               let mut filtered_nodes = Vec::new();
-                for (key, val) in self.data.iter() {
-                    if val.is_empty() {
-                        filtered_nodes.push(*key);
-                    }
-                }
-
-                let mut rm_nodes = Vec::new();
-                for k in filtered_nodes {
-                    for (_, val) in self.data.iter() {
-                        if val.contains(&k) {
-                            rm_nodes.push(k);
-                        }
-                    }
-                }
-
-                for k in rm_nodes {
-                    self.data.remove(&k);
-                }
-                */
                 true
             }
             None => {
                 if !nodes.is_empty() {
+				// if any node was poiting to given node only then it may become
+				// unconnected. Check for that and update the graph accordingly.
                     for v in &nodes {
                         let mut unconnected = true;
                         for (_, val) in self.data.iter() {
@@ -120,26 +101,6 @@ impl Graph {
                             self.data.remove(&v);
                         }
                     }
-
-                    /*let mut filtered_nodes = Vec::new();
-                    for (key, val) in self.data.iter() {
-                        if val.is_empty() {
-                            filtered_nodes.push(*key);
-                        }
-                    }
-
-                    let mut rm_nodes = Vec::new();
-                    for k in filtered_nodes {
-                        for (_, val) in self.data.iter() {
-                            if val.contains(&k) {
-                                rm_nodes.push(k);
-                            }
-                        }
-                    }
-
-                    for k in rm_nodes {
-                        self.data.remove(&k);
-                    }*/
                     true
                 } else {
                     false
